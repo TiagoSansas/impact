@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sansasdeve.impact.domain.user.User;
 import com.sansasdeve.impact.repositories.UserRepository;
+import com.sansasdeve.impact.service.exceptions.ResourceNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +21,13 @@ public class UserService {
   public Page<User> findAll(Pageable pageable) {
     Page<User> users = userRepository.findAll(pageable);
     return users.map(x -> new User(x));
+  }
+
+  @Transactional
+  public User findById(Long id) {
+    User searchUser = userRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+    return new User(searchUser);
   }
 
   @Transactional
