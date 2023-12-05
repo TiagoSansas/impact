@@ -32,9 +32,17 @@ public class UserService {
 
   @Transactional
   public User register(User user) {
-    User newUser = new User();
+    User newUser = new User(user);
     newUser = userRepository.save(newUser);
     return newUser;
+  }
+
+  @Transactional
+  public User update(Long id, User user) {
+    User newEntity = userRepository.getReferenceById(id);
+    newEntity.setName(user.getName());
+    newEntity.setPassword(user.getPassword());
+    return newEntity;
   }
 
 }

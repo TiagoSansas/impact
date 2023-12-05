@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class UserController {
   @Autowired
   UserRepository userRepository;
 
-  @GetMapping(value = "/user/{id}")
+  @GetMapping(value = "/users/{id}")
   public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
     Optional<User> optionalResponse = userRepository.findById(id);
     User user = optionalResponse.get();
@@ -55,8 +56,18 @@ public class UserController {
 
     User newUser = new User(user.name(), user.email(), encryptedPassword);
 
-    this.userRepository.save(newUser);
+    this.userService.register(newUser);
 
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping(value = "users/{id}")
+  public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User entity) {
+
+    String encryptedPassword = new BCryptPasswordEncoder().encode(entity.getPassword());
+    entity.setPassword(encryptedPassword);
+
+    entity = userService.update(id, entity);
     return ResponseEntity.ok().build();
   }
 
