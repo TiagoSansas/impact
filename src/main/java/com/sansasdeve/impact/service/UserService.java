@@ -27,7 +27,7 @@ public class UserService {
   public User findById(Long id) {
     User searchUser = userRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
-    return new User(searchUser);
+    return searchUser;
   }
 
   @Transactional

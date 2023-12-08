@@ -1,7 +1,5 @@
 package com.sansasdeve.impact.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +19,6 @@ import com.sansasdeve.impact.domain.user.AutheticationDTO;
 import com.sansasdeve.impact.domain.user.LoginResponseDTO;
 import com.sansasdeve.impact.domain.user.RegisterDTO;
 import com.sansasdeve.impact.domain.user.User;
-import com.sansasdeve.impact.domain.user.UserDTO;
 import com.sansasdeve.impact.domain.user.UserRole;
 import com.sansasdeve.impact.infra.security.TokenService;
 import com.sansasdeve.impact.repositories.UserRepository;
@@ -55,11 +52,9 @@ public class UserController {
   }
 
   @GetMapping(value = "/users/{id}")
-  public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-    Optional<User> optionalResponse = userRepository.findById(id);
-    User user = optionalResponse.get();
-    UserDTO userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail());
-    return ResponseEntity.ok(userDTO);
+  public ResponseEntity<User> findById(@PathVariable Long id) {
+    User response = userService.findById(id);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping(value = "users")

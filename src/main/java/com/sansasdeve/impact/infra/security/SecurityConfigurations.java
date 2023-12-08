@@ -25,13 +25,16 @@ public class SecurityConfigurations {
     return httpSecurity
         .headers(headers -> headers.frameOptions().disable())
         .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/auth/register").permitAll()
-            .requestMatchers("/auth/login").permitAll()
-            .anyRequest().authenticated())
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        /*
+         * .sessionManagement(session ->
+         * session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+         * .authorizeHttpRequests(authorize -> authorize
+         * .requestMatchers("/h2-console/**").permitAll()
+         * .requestMatchers("/auth/register").permitAll()
+         * .requestMatchers("/auth/login").permitAll()
+         * .anyRequest().authenticated())
+         * .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+         */
         .build();
   }
 
